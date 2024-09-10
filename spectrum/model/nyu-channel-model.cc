@@ -891,8 +891,8 @@ NYUChannelModel::GetNewChannel (Ptr<const NYUChannelParams> channelParams,
   //Step 11: Generate channel coefficients for each ray n and each receiver
   // and transmitter element pair u,s.
   
-  uint64_t uSize = uAntenna->GetNumberOfElements ();
-  uint64_t sSize = sAntenna->GetNumberOfElements ();
+  uint64_t uSize = uAntenna->GetNumElems ();
+  uint64_t sSize = sAntenna->GetNumElems ();
 
   Complex3DVector hUsn(uSize,sSize,channelParams->totalSubpaths); //channel coffecient hUsn[u][s][n];
 
@@ -1976,9 +1976,10 @@ NYUChannelModel::GetBWAdjustedtedPowerSpectrum (MatrixBasedChannelModel::Double2
   double BoundaryTime = 0; //All Subpaths <= boundary time are combined together
   double SPcombinedPwr = 0; // Combined complex power of the SP
 
-  std::complex<double> sum_sp = 0; // add the subpath amplitude and phase together
+  std::complex<double> sum_sp; // add the subpath amplitude and phase together
+  sum_sp = 0;
 
-  //bool SetBoundaryTime = true; // indicated a new boundary time is being set.
+  // bool SetBoundaryTime = true; // indicated a new boundary time is being set.
   bool isSubpathCombined = false;
   MatrixBasedChannelModel::Double2DVector powerSpectrum;
 
