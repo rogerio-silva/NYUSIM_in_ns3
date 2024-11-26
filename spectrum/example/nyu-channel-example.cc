@@ -98,7 +98,7 @@ DoBeamforming(Ptr<NetDevice> thisDevice,
     double vAngleRadian = completeAngle.GetInclination(); // the elevation angle
 
     // retrieve the number of antenna elements and resize the vector
-    uint64_t totNoArrayElements = thisAntenna->GetNumberOfElements();
+    uint64_t totNoArrayElements = thisAntenna->GetNumElems();
     PhasedArrayModel::ComplexVector antennaWeights(totNoArrayElements);
 
     // the total power is divided equally among the antenna elements
@@ -160,11 +160,12 @@ ComputeSnr(const ComputeSnrParams& params)
     NS_ASSERT_MSG(params.rxAntenna, "params.rxAntenna is nullptr!");
 
     // apply the fast fading and the beamforming gain
-    Ptr<SpectrumValue> rxPsd = m_spectrumLossModel->CalcRxPowerSpectralDensity(txParams,
+    Ptr<SpectrumSignalParameters> rxParams = m_spectrumLossModel->CalcRxPowerSpectralDensity(txParams,
                                                                                params.txMob,
                                                                                params.rxMob,
                                                                                params.txAntenna,
                                                                                params.rxAntenna);
+    Ptr<SpectrumValue> rxPsd = rxParams->psd;
     NS_LOG_DEBUG("Average rx power " << 10 * log10(Sum(*rxPsd) * 180e3) << " dB");
 
     // compute the SNR
